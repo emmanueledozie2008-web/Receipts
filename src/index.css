@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/* ── Print styles ── */
+/* ── Print styles ── */
+@media print {
+    body * {
+      visibility: hidden !important;
+    }
+  
+    #receipt-print-area,
+    #receipt-print-area * {
+      visibility: visible !important;
+    }
+  
+    #receipt-print-area {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: white !important;
+      color: black !important;
+      padding: 40px 20px;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+      border: none;
+      box-shadow: none;
+      font-family: 'Inter', 'Helvetica', 'Arial', sans-serif;
+    }
+  
+    #receipt-print-area .receipt-inner {
+      max-width: 400px;
+      width: 100%;
+      background: white !important;
+      padding: 24px 20px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+  
+    /* Force all text black except status icon/color */
+    #receipt-print-area * {
+      color: #000000 !important;
+    }
+  
+    /* Keep status icon/color */
+    #receipt-print-area .text-emerald-600 {
+      color: #065f46 !important;
+    }
+    #receipt-print-area .text-amber-600 {
+      color: #92400e !important;
+    }
+    #receipt-print-area .text-red-600 {
+      color: #991b1b !important;
+    }
+  
+    .no-print {
+      display: none !important;
+    }
+  
+    @page {
+      margin: 0.5cm 0.8cm;
+    }
+  }
