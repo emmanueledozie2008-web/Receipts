@@ -1,66 +1,147 @@
 @import "tailwindcss";
+@import "tailwindcss/utilities";
 
-/* ── Print styles ── */
-/* ── Print styles ── */
+/* ─── Global styles ────────────────────────────── */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #f8fafc;
+  transition: background 0.3s;
+}
+body.dark {
+  background: #0f172a;
+}
+
+/* ─── Button variants ────────────────────────────── */
+.btn-primary {
+  background: #6366f1;
+  color: #fff;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-primary:hover {
+  background: #4f46e5;
+}
+.btn-primary:active {
+  transform: scale(0.97);
+}
+.dark .btn-primary {
+  background: #818cf8;
+}
+.dark .btn-primary:hover {
+  background: #6366f1;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #1e293b;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+.dark .btn-secondary {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+.dark .btn-secondary:hover {
+  background: #334155;
+}
+
+/* ─── Input focus ────────────────────────────────── */
+input, select, textarea {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+.dark input:focus, .dark select:focus, .dark textarea:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+}
+
+/* ─── Print styles ────────────────────────────────── */
 @media print {
-    body * {
-      visibility: hidden !important;
-    }
-  
-    #receipt-print-area,
-    #receipt-print-area * {
-      visibility: visible !important;
-    }
-  
-    #receipt-print-area {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: white !important;
-      color: black !important;
-      padding: 40px 20px;
-      display: flex !important;
-      align-items: center;
-      justify-content: center;
-      overflow: auto;
-      border: none;
-      box-shadow: none;
-      font-family: 'Inter', 'Helvetica', 'Arial', sans-serif;
-    }
-  
-    #receipt-print-area .receipt-inner {
-      max-width: 400px;
-      width: 100%;
-      background: white !important;
-      padding: 24px 20px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-  
-    /* Force all text black except status icon/color */
-    #receipt-print-area * {
-      color: #000000 !important;
-    }
-  
-    /* Keep status icon/color */
-    #receipt-print-area .text-emerald-600 {
-      color: #065f46 !important;
-    }
-    #receipt-print-area .text-amber-600 {
-      color: #92400e !important;
-    }
-    #receipt-print-area .text-red-600 {
-      color: #991b1b !important;
-    }
-  
-    .no-print {
-      display: none !important;
-    }
-  
-    @page {
-      margin: 0.5cm 0.8cm;
-    }
+  /* Hide everything except the receipt */
+  body * {
+    visibility: hidden !important;
   }
+
+  #receipt-print-area,
+  #receipt-print-area * {
+    visibility: visible !important;
+  }
+
+  #receipt-print-area {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: white !important;
+    color: black !important;
+    padding: 40px 20px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    border: none;
+    box-shadow: none;
+    font-family: 'Inter', 'Helvetica', 'Arial', sans-serif;
+  }
+
+  #receipt-print-area .receipt-inner {
+    max-width: 420px;
+    width: 100%;
+    background: white !important;
+    padding: 24px 20px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  /* ── Bold all text ── */
+  #receipt-print-area .font-bold,
+  #receipt-print-area .font-extrabold,
+  #receipt-print-area .font-semibold,
+  #receipt-print-area strong,
+  #receipt-print-area b,
+  #receipt-print-area .font-medium,
+  #receipt-print-area .status-text {
+    font-weight: 700 !important;
+  }
+
+  #receipt-print-area h1,
+  #receipt-print-area .text-2xl {
+    font-weight: 800 !important;
+  }
+
+  /* ── Force red for Pending / Failed ── */
+  #receipt-print-area .status-text.text-red-600 {
+    color: #dc2626 !important;
+  }
+
+  /* ── Force green for Completed ── */
+  #receipt-print-area .status-text.text-emerald-600 {
+    color: #065f46 !important;
+  }
+
+  /* ── Make all other text black ── */
+  #receipt-print-area *:not(.status-text) {
+    color: #000000 !important;
+  }
+
+  /* ── Keep icons inherited ── */
+  #receipt-print-area svg {
+    color: inherit !important;
+  }
+
+  /* ── Hide UI elements ── */
+  .no-print {
+    display: none !important;
+  }
+
+  @page {
+    margin: 0.5cm 0.8cm;
+  }
+}

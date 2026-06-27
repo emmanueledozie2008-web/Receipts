@@ -9,6 +9,7 @@ export interface ReceiptData {
     date: string;
     status: 'Completed' | 'Pending' | 'Failed';
     notes: string;
+    fee?: string;
   }
   
   export interface ValidationErrors {

@@ -15,7 +15,6 @@ import {
 } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
-
 // ─── Currencies ──────────────────────────────────────────────
 const currencies = [
   { code: 'USD', label: 'USD - US Dollar' },
@@ -29,11 +28,9 @@ const currencies = [
   { code: 'INR', label: 'INR - Indian Rupee' },
   { code: 'BRL', label: 'BRL - Brazilian Real' },
   { code: 'ZAR', label: 'ZAR - South African Rand' },
-  { code: 'MEX', label: 'MEX - Mexican peso' },
-  { code: 'MYS', label: 'MYS - Malaysian Ringgit' },
 ];
 
-// ─── FormInput Component ────────────────────────────────────
+// ─── FormInput ──────────────────────────────────────────────
 interface FormInputProps {
   label: string;
   id: string;
@@ -42,7 +39,7 @@ interface FormInputProps {
   error?: string;
   required?: boolean;
   rows?: number;
-  [key: string]: any; // accept any extra props (type, step, min, placeholder, onBlur, etc.)
+  [key: string]: any;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -57,7 +54,6 @@ const FormInput: React.FC<FormInputProps> = ({
 }) => {
   const isTextarea = rows !== undefined;
   const Component = isTextarea ? 'textarea' : 'input';
-
   return (
     <div className="space-y-1.5">
       <label htmlFor={id} className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -85,7 +81,7 @@ const FormInput: React.FC<FormInputProps> = ({
   );
 };
 
-// ─── LogoUpload Component ──────────────────────────────────
+// ─── LogoUpload ─────────────────────────────────────────────
 interface LogoUploadProps {
   logo: string | null;
   onUpload: (url: string) => void;
@@ -94,7 +90,6 @@ interface LogoUploadProps {
 
 const LogoUpload: React.FC<LogoUploadProps> = ({ logo, onUpload, onRemove }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
-
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -104,7 +99,6 @@ const LogoUpload: React.FC<LogoUploadProps> = ({ logo, onUpload, onRemove }) => 
     };
     reader.readAsDataURL(file);
   };
-
   return (
     <div className="space-y-1.5">
       <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Company Logo</label>
@@ -136,14 +130,14 @@ const LogoUpload: React.FC<LogoUploadProps> = ({ logo, onUpload, onRemove }) => 
   );
 };
 
-// ─── Main ReceiptForm Component ────────────────────────────
+// ─── Main Component ──────────────────────────────────────────
 interface ReceiptFormProps {
   data: ReceiptData;
   updateData: <K extends keyof ReceiptData>(key: K, value: ReceiptData[K]) => void;
   resetForm: () => void;
   errors: ValidationErrors;
   setErrors: React.Dispatch<React.SetStateAction<ValidationErrors>>;
-  previewRef: React.RefObject<HTMLDivElement>;   // ← from App
+  previewRef: React.RefObject<HTMLDivElement>;
 }
 
 const ReceiptForm: React.FC<ReceiptFormProps> = ({
@@ -152,17 +146,15 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({
   resetForm,
   errors,
   setErrors,
-  previewRef,   // ← use this ref, not creating a new one
+  previewRef,
 }) => {
   const [isSending, setIsSending] = useState(false);
 
-  // Validation wrapper
   const handleBlur = (field: keyof ValidationErrors) => {
     const error = validateField(field, data);
     setErrors((prev) => ({ ...prev, [field]: error }));
   };
 
-  // ─── Handlers ──────────────────────────────────────────────
   const handleCopy = async () => {
     if (!data.transactionId.trim()) {
       toast.error('No transaction ID to copy');
@@ -178,7 +170,6 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({
       return;
     }
     try {
-      // Small delay to ensure rendering is complete
       await new Promise((resolve) => setTimeout(resolve, 300));
       await generatePDF(previewRef.current, `receipt-${data.transactionId || 'download'}.pdf`);
       toast.success('PDF downloaded!');
@@ -199,14 +190,13 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({
       toast.success('Image downloaded!');
     } catch (err) {
       console.error(err);
-      toast.error('Failed to generate image: ' + (err as Error).message);
+      toast.error('Failed to generate image');
     }
   };
 
   const handlePrint = () => window.print();
 
   const handleSendEmail = async () => {
-    // Validate all fields
     const fields: (keyof ValidationErrors)[] = [
       'companyName',
       'customerName',
@@ -243,7 +233,6 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({
     }
   };
 
-  // ─── Render ────────────────────────────────────────────────
   return (
     <div className="space-y-5">
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-card border border-slate-200/60 dark:border-slate-800/60 p-5 md:p-6 transition-colors duration-300">
@@ -291,7 +280,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({
             onChange={(e) => updateData('customerEmail', e.target.value)}
             error={errors.customerEmail}
             required
-            placeholder="@example.com"
+            placeholder="john@example.com"
             onBlur={() => handleBlur('customerEmail')}
           />
 
@@ -329,6 +318,18 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({
               </select>
             </div>
           </div>
+
+          {/* Fee (optional) */}
+          <FormInput
+            label="Fee (optional)"
+            id="fee"
+            type="number"
+            step="0.01"
+            min="0"
+            value={data.fee || ''}
+            onChange={(e) => updateData('fee', e.target.value)}
+            placeholder="0.00"
+          />
 
           <hr className="border-slate-200/60 dark:border-slate-800/60" />
 

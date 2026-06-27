@@ -1,17 +1,14 @@
-import { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Toaster } from 'react-hot-toast';
-
 import Header from './Components/Header';
 import ReceiptForm from './Components/ReceiptForm';
 import ReceiptPreview from './Components/ReceiptPreview';
 import { useTheme } from './Hooks/UseTheme';
 import type { ReceiptData, ValidationErrors } from './Types/Receipt';
-
-// ✅ Import the default logo
-import defaultLogo from './assets/Logo1.jpeg';   // note the '1' 
+import defaultLogo from './assets/Logo1.jpeg';
 
 const initialData: ReceiptData = {
-  companyLogo: defaultLogo,   // ← use it here
+  companyLogo: defaultLogo,
   companyName: '',
   customerName: '',
   customerEmail: '',
@@ -21,8 +18,8 @@ const initialData: ReceiptData = {
   date: new Date().toISOString().split('T')[0],
   status: 'Completed',
   notes: '',
+  fee: '0.00',
 };
-
 
 function App() {
   const [data, setData] = useState<ReceiptData>(initialData);
@@ -47,7 +44,6 @@ function App() {
     setErrors({});
   }, []);
 
-  // ✅ Cast to React.RefObject<HTMLDivElement> to match the prop type
   const receiptRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
 
   return (
@@ -55,7 +51,6 @@ function App() {
       <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          {/* Left: Form */}
           <div className="no-print">
             <ReceiptForm
               data={data}
@@ -63,11 +58,9 @@ function App() {
               resetForm={resetForm}
               errors={errors}
               setErrors={setErrors}
-              previewRef={receiptRef}      // ← passes the correct type
+              previewRef={receiptRef}
             />
           </div>
-
-          {/* Right: Live Preview */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
@@ -84,18 +77,16 @@ function App() {
           </div>
         </div>
       </main>
-
       <footer className="border-t border-slate-200/60 dark:border-slate-800/60 py-4 mt-6 no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-xs text-center text-slate-400 dark:text-slate-500">
-            you can check the status on the · faster payments, and &amp; Tested Bank
+            Receipt Generator Demo · Built with React, TypeScript &amp; Tailwind CSS
             <br className="sm:hidden" />
             <span className="hidden sm:inline">· </span>
-            thank you for using paypal
+            For demonstration purposes only — not for official use
           </p>
         </div>
       </footer>
-
       <Toaster
         position="bottom-right"
         toastOptions={{
