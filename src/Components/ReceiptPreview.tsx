@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react';
+import  { forwardRef } from 'react';
 import type { ReceiptData } from '../Types/Receipt';
-import defaultLogo from '../assets/Logo1.jpeg';
+// import defaultLogo from '../assets/Logo1.jpeg';
 import { FaCheckCircle, FaClock, FaTimesCircle } from 'react-icons/fa';
 
 export const getCurrencySymbol = (code: string): string => {
