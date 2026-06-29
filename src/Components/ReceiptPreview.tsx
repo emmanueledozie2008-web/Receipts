@@ -16,7 +16,7 @@ export const getCurrencySymbol = (code: string): string => {
     { code: 'BRL', symbol: 'R$' },
     { code: 'ZAR', symbol: 'R' },
     { code: 'MXN', symbol: '$' },
-    { code: 'IDR', symbol: 'RP' },
+    { code: 'IDR', symbol: 'Rp' },
   ];
   return currencies.find((c) => c.code === code)?.symbol || '$';
 };
@@ -65,98 +65,99 @@ const ReceiptPreview = forwardRef<HTMLDivElement, ReceiptPreviewProps>(
       <div
         ref={ref}
         id="receipt-print-area"
-        // Fixed width, auto height, no overflow clipping, white background
-        className="w-[400px] bg-white rounded-xl border border-gray-200 shadow-lg p-6"
+        // ✅ Responsive: full width on mobile, capped at 400px on larger screens
+        className="w-full max-w-[400px] bg-white rounded-xl border border-gray-200 shadow-lg p-4 sm:p-6 mx-auto"
         style={{ overflow: 'visible', height: 'auto' }}
       >
-        {/* Inner container – flex column */}
-        <div className="flex flex-col gap-3">
-
+        <div className="flex flex-col gap-2 sm:gap-3">
           {/* Company name + logo */}
           <div className="flex items-center justify-center gap-2">
             {data.companyLogo && (
               <img
                 src={data.companyLogo}
                 alt="Logo"
-                className="h-8 w-8 object-contain"
+                className="h-7 w-7 sm:h-8 sm:w-8 object-contain"
               />
             )}
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-xl sm:text-2xl font-bold text-gray-900">
               {companyName}
             </span>
           </div>
 
-          {/* Status – with icon and color */}
-          <div className={`flex items-center justify-center gap-2 text-base font-bold ${statusColor}`}>
-            <StatusIcon className="text-xl" />
+          {/* Status */}
+          <div className={`flex items-center justify-center gap-2 text-sm sm:text-base font-bold ${statusColor}`}>
+            <StatusIcon className="text-lg sm:text-xl" />
             <span>{statusText}</span>
           </div>
 
           <hr className="border-gray-300" />
 
-          {/* Receipt details – flex column, each row a flex row with label on left, value on right */}
-          <div className="flex flex-col gap-2 text-sm font-bold text-gray-800">
-
+          {/* Receipt details */}
+          <div className="flex flex-col gap-1.5 sm:gap-2 text-xs sm:text-sm font-bold text-gray-800">
             {/* To */}
-            <div className="flex justify-between items-baseline">
-              <span className="text-gray-900">To:</span>
-              <span className="text-right break-words">{data.customerName || 'N/A'}</span>
+            <div className="flex justify-between items-baseline gap-2">
+              <span className="text-gray-900 font-semibold flex-shrink-0">To:</span>
+              <span className="text-right break-words max-w-[55%] sm:max-w-[60%]">
+                {data.customerName || 'N/A'}
+              </span>
             </div>
 
             {/* Date */}
-            <div className="flex justify-between items-baseline">
-              <span className="text-gray-900">Date:</span>
-              <span className="text-right whitespace-nowrap">{formattedDate}</span>
+            <div className="flex justify-between items-baseline gap-2">
+              <span className="text-gray-900 font-semibold flex-shrink-0">Date:</span>
+              <span className="text-right whitespace-nowrap text-[11px] sm:text-sm">
+                {formattedDate}
+              </span>
             </div>
 
             {/* Transaction ID */}
-            <div className="flex justify-between items-baseline">
-              <span className="text-gray-900">Transaction ID:</span>
-              <span className="text-right font-mono text-xs break-all">
+            <div className="flex justify-between items-baseline gap-2">
+              <span className="text-gray-900 font-semibold flex-shrink-0">Transaction ID:</span>
+              <span className="text-right font-mono text-[10px] sm:text-xs break-all max-w-[55%] sm:max-w-[60%]">
                 {data.transactionId || '—'}
               </span>
             </div>
 
             {/* Fee – only if > 0 */}
             {fee > 0 && (
-              <div className="flex justify-between items-baseline">
-                <span className="text-gray-900">Fee:</span>
-                <span className="text-right">
+              <div className="flex justify-between items-baseline gap-2">
+                <span className="text-gray-900 font-semibold flex-shrink-0">Fee:</span>
+                <span className="text-right text-[11px] sm:text-sm">
                   {symbol}
                   {formatMoney(fee)}
                 </span>
               </div>
             )}
 
-            {/* Total Amount – bold and larger */}
-            <div className="flex justify-between items-baseline pt-1">
-              <span className="text-gray-900 text-base font-extrabold">Total Amount:</span>
-              <span className="text-right text-base font-extrabold text-gray-900">
+            {/* Total Amount */}
+            <div className="flex justify-between items-baseline gap-2 pt-1 border-t border-gray-200">
+              <span className="text-gray-900 text-sm sm:text-base font-extrabold flex-shrink-0">
+                Total Amount:
+              </span>
+              <span className="text-right text-sm sm:text-base font-extrabold text-gray-900">
                 {symbol}
                 {formatMoney(total)}
               </span>
             </div>
-
           </div>
 
           <hr className="border-gray-300" />
 
           {/* Footer */}
-          <div className="text-center text-sm font-bold text-gray-500">
+          <div className="text-center text-xs sm:text-sm font-bold text-gray-500">
             <div>Thank you for using {companyName}.</div>
-            <div className="text-xs">www.{companyName.toLowerCase()}.com</div>
+            <div className="text-[10px] sm:text-xs">www.{companyName.toLowerCase()}.com</div>
           </div>
 
-          {/* Notes – if present */}
+          {/* Notes */}
           {data.notes && (
-            <div className="pt-2 text-sm border-t border-gray-300">
+            <div className="pt-2 text-xs sm:text-sm border-t border-gray-300">
               <div className="font-bold text-gray-900">Notes:</div>
               <div className="text-gray-700 whitespace-pre-wrap break-words">
                 {data.notes}
               </div>
             </div>
           )}
-
         </div>
       </div>
     );
