@@ -135,6 +135,10 @@ input:focus, select:focus, textarea:focus {
   #receipt-print-area svg {
     color: inherit !important;
   }
+  
+  #receipt-print-area {
+    overflow: visible !important;
+  }
 
   /* ── Hide UI elements ── */
   .no-print {

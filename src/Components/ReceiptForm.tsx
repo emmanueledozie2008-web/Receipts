@@ -28,6 +28,10 @@ const currencies = [
   { code: 'INR', label: 'INR - Indian Rupee' },
   { code: 'BRL', label: 'BRL - Brazilian Real' },
   { code: 'ZAR', label: 'ZAR - South African Rand' },
+    // ... existing ...
+    { code: 'MXN', label: 'MXN - Mexican Peso' },
+    { code: 'IDR', label: 'IDR - Indonesian Rupiah' },
+
 ];
 
 // ─── FormInput ──────────────────────────────────────────────
@@ -164,33 +168,31 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({
     toast[ok ? 'success' : 'error'](ok ? 'Transaction ID copied!' : 'Failed to copy');
   };
 
-  const handlePDF = async () => {
-    if (!previewRef.current) {
-      toast.error('Preview not ready');
-      return;
-    }
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      await generatePDF(previewRef.current, `receipt-${data.transactionId || 'download'}.pdf`);
-      toast.success('PDF downloaded!');
-    } catch (err) {
-      console.error(err);
-      toast.error('Failed to generate PDF');
-    }
-  };
-
   const handleImage = async () => {
     if (!previewRef.current) {
       toast.error('Preview not ready');
       return;
     }
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
       await generateImage(previewRef.current, `receipt-${data.transactionId || 'image'}.png`);
       toast.success('Image downloaded!');
     } catch (err) {
       console.error(err);
       toast.error('Failed to generate image');
+    }
+  };
+  
+  const handlePDF = async () => {
+    if (!previewRef.current) {
+      toast.error('Preview not ready');
+      return;
+    }
+    try {
+      await generatePDF(previewRef.current, `receipt-${data.transactionId || 'download'}.pdf`);
+      toast.success('PDF downloaded!');
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to generate PDF');
     }
   };
 
@@ -348,7 +350,7 @@ const ReceiptForm: React.FC<ReceiptFormProps> = ({
             <FormInput
               label="Date"
               id="date"
-              type="date"
+              type="datetime-local"
               value={data.date}
               onChange={(e) => updateData('date', e.target.value)}
               error={errors.date}

@@ -37,6 +37,8 @@ export const sendReceiptEmail = async (data: ReceiptData): Promise<void> => {
     transaction_date: formattedDateTime,
   };
 
+
+
   emailjs.init(PUBLIC_KEY);
   await emailjs.send(SERVICE_ID, TEMPLATE_ID, params);
 };
