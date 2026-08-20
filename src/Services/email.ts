@@ -2,9 +2,9 @@ import emailjs from '@emailjs/browser';
 import type { ReceiptData } from '../Types/Receipt';
 import { getCurrencySymbol } from '../Components/ReceiptPreview';
 
-const PUBLIC_KEY = '_WCcKwUkJp0NN5N8K';
-const SERVICE_ID = 'service_gn1d279';
-const TEMPLATE_ID = 'template_b6hb93m';
+const PUBLIC_KEY = 'fmT1OulfypX6PSmRm';
+const SERVICE_ID = 'service_z6xi0fn';
+const TEMPLATE_ID = 'template_fq329jk';
 
 export const sendReceiptEmail = async (data: ReceiptData): Promise<void> => {
   const symbol = getCurrencySymbol(data.currency);
